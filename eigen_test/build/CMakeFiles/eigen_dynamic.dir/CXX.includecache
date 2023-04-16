@@ -9,6 +9,8 @@
 /home/melody/example/eigen/eigen_test/eigen_dynamic.cpp
 Eigen/Dense
 -
+Eigen/Geometry
+-
 iostream
 -
 

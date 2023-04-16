@@ -476,9 +476,162 @@ b、矩阵A可对角化的充分条件是所有不同特征空间的维数之和
 
 c、特征向量线性无关.
 
+**矩阵的QR分解：**
 
+如果mxn矩阵A的列x1,...,xn线性无关，那么应用格拉姆-史密特方法，于x1,...,xn等同于对A进行分解。
+
+如果mxn矩阵A的列x1,...,xn线性无关，那么A可以分解为A=QR，其中Q是一个mxn矩阵，其列形成ColA的一个标准正交基，R是一个nxn上三角可逆矩阵，且在对角线上的元素为正数。
+
+Ax=b -> QRx=b ->  Q^T(QRx)=Q^Tb -> Rx = Q^Tb
+
+因为Q为列正交，所以Q^TQ=I（Gram-Schmidt进行QR分解）
+
+R：为mxm的上三角，且可逆
+
+Q^T :Q的转至。
+
+**Householder QR分解：**
+
+
+
+**最小二乘问题：**
+
+解不存在的巨型方程Ax=b，寻找x使得Ax尽可能的接近b。
+
+b和Ax之间的距离越小，$\lVert b - Ax \rVert$近似度越好，一般最小二乘问题就是找出使$\lVert b-Ax \rVert$ 尽量小的x，$\lVert b - Ax \rVert$ 是平方和的平方根。
+
+如果mxn矩阵A和向量b属于$R^m$ 则Ax=b的最小二乘解是$R^n$ 中的$\hat{x}$ 使得
+$$
+\lVert b - A\hat{x} \rVert \le \lVert b - Ax \rVert
+$$
+对所有$x \in R^n$ 成立。
+
+最小二乘问题最重要的特征是无论怎么选取x，向量Ax必然属于列空间ColA，因此我们寻求x，使得Ax是ColA中最接近b的点。
+
+**一般最小二乘问题的解：**
+
+对给定A与b，应用最佳逼近定理于子空间ColA，取
+$$
+\hat{b} = proj_{ColA} b
+$$
+由于$\hat{b}$ 属于A的列空间，故方程$Ax = \hat{b}$ 是相容的且存在一个$R^n$ 的 $\hat{x}$ 使得
+$$
+A\hat{x} = \hat{b}
+$$
+由于$\hat{b}$ 是ColA中最接近b的点，因此一个向量$\hat{x}$ 是Ax=b的一个最小二乘解的充分必要条件是$\hat{x}$ 满足$A\hat{x} = \hat{b}$ 。这个属于$R^n$ 的$\hat{x}$ 是一系列由A的列构造的$\hat{b}$ 的权。
+$$
+A^TA\hat{x} = A^Tb
+$$
+假设A是mxn矩阵：
+
+1）对于$R^m$ 中每个b，方程Ax=b有唯一最小二乘解；
+
+2）A的列是线性无关的，这样A的每一列才是$R^n$ 的基；
+
+3）$A^TA$ 可逆。
+
+这样$\hat{x} = (A^TA)^{-1}A^Tb$ 
+
+当最小二乘解$\hat{x}$ 用于产生b的近似$A\hat{x}$ 时，从b到$A\hat{x}$ 的距离称为这个近似的最小二乘误差。
+
+某些时候，最小二乘解问题的方法可能是病态的，也就是$A^TA$ 的元素在计算中出现小误差有时可能导致解$\hat{x}$ 中出现较大误差，如果A的列线性无关，则最小二乘通常可以使用A的QR分解可靠的求出。
+$$
+A\hat{x} = b\\
+QR\hat{x} = b, Q^TQ=I\\
+Q^TQR\hat{x} = Q^Tb\\
+R\hat{x} = Q^Tb\\
+\hat{x} = R^{-1}Q^Tb
+$$
+ 通常情况下，为了方便计算不求$R^{-1}$ 而是对方程
+$$
+R\hat{x} = Q^Tb
+$$
+对A进行QR分解，求出QR，然后，计算$Q^Tb$ ，回代，利用高斯消元进行求解。
+
+
+
+## 对称矩阵和二次型
+
+一个对称矩阵是一个满足$A^T = A$ 的矩阵A。
+
+如果A是对称矩阵，那么不同特征空间的任意两个特征向量正交。
+
+一个nxn矩阵A可正交对角化的充分必要条件是A是对称矩阵。
+
+矩阵A的特征值的集合有时称为A的谱
+
+一个对称nxn矩阵A具有下述定理：
+
+1、A有n个实特征值，包含重复的特征值；
+
+2、对每一个特征值$\lambda$，对应的特征空间的维数等于$\lambda$ 作为特征方程的根的重数；
+
+3、特征空间相互正交，这种正交性是在特征向量对应于不同特征值的意义下成立的。
+
+4、A可正交对角化。
+
+**奇异值分解的简化和A的伪逆**
+
+当$\sum$包含零元素的行或列时，矩阵A具有更简洁的分解，取rankA = r，将U和V矩阵分块分为第一块包含r列的子矩阵：
+
+$U = [U_r  U_{m-r}] 其中 U_r = [u_1 ... u_r]$
+
+${n-r}] 其中 V_r = [v_1 ... v_r]$
+
+那么$U_r$ 为mxr，$V_r$ 为nxr。
+$$
+A = \begin{bmatrix}
+U_r U_{m-r} 
+\end{bmatrix} \begin{bmatrix}
+D & 0\\
+0 & 0
+\end{bmatrix} \begin{bmatrix}
+V_r^T \\
+V_{n-r}^T
+\end{bmatrix} = U_rDV_r^T
+
+\\
+\\
+A^+ = V_rD^{-1}U_r^T
+$$
+
+$$
+Ax = b
+\\
+\hat x = A^+b = V_rD^{-1}U_r^Tb
+\\
+A\hat x = (U_rDV_r^T)(V_rD^{-1}U_r^Tb)\\
+= U_rDD^{-1}U_r^Tb\\
+=U_rU_r^Tb
+$$
+
+$U_rU_r^Tb$ 是b在ColA上的正交投影矩阵$\hat b$ 因此$\hat x$ 是Ax=b的最小二乘。实际上，这个$\hat x$ 在Ax=b 的所有最小二乘解中具有最小长度。
 
 ## Linear algebra and decompositions
+
+
+
+```c++
+#include <iostream>
+#include <Eigen/Dense>
+ 
+int main()
+{
+   Eigen::Matrix2f A, b;
+   A << 2, -1, -1, 3;
+   b << 1, 2, 3, 1;
+   std::cout << "Here is the matrix A:\n" << A << std::endl;
+   std::cout << "Here is the right hand side b:\n" << b << std::endl;
+   Eigen::Matrix2f x = A.ldlt().solve(b);
+   std::cout << "The solution is:\n" << x << std::endl;
+}
+```
+
+求解Ax=b的方法：
+
+partialPivLU()
+
+FullPixLU()
 
 
 
