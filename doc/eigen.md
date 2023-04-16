@@ -633,5 +633,102 @@ partialPivLU()
 
 FullPixLU()
 
+HouseholderQR()
 
+ColPivHouseholderQR()
+
+completeOrthogonalDecomposition()
+
+LLT()
+
+LDLT()
+
+
+
+```c++
+#include <iostream>
+#include <Eigen/Dense>
+ 
+int main()
+{
+   Eigen::MatrixXf A = Eigen::MatrixXf::Random(3, 2);
+   std::cout << "Here is the matrix A:\n" << A << std::endl;
+   Eigen::VectorXf b = Eigen::VectorXf::Random(3);
+   std::cout << "Here is the right hand side b:\n" << b << std::endl;
+   std::cout << "The least-squares solution is:\n"
+        << A.template bdcSvd<Eigen::ComputeThinU | Eigen::ComputeThinV>().solve(b) << std::endl;
+}
+```
+
+BDCSVD()
+
+JacobiSVD()
+
+**Checking if a matrix is singular**
+
+```C++
+#include <iostream>
+#include <Eigen/Dense>
+ 
+using Eigen::MatrixXd;
+ 
+int main()
+{
+   MatrixXd A = MatrixXd::Random(100,100);
+   MatrixXd b = MatrixXd::Random(100,50);
+   MatrixXd x = A.fullPivLu().solve(b);
+   double relative_error = (A*x - b).norm() / b.norm(); // norm() is L2 norm
+   std::cout << "The relative error is:\n" << relative_error << std::endl;
+}
+```
+
+**Computing eigenvalues and eigenvectors**
+
+```C++
+#include <iostream>
+#include <Eigen/Dense>
+ 
+int main()
+{
+   Eigen::Matrix2f A;
+   A << 1, 2, 2, 3;
+   std::cout << "Here is the matrix A:\n" << A << std::endl;
+   Eigen::SelfAdjointEigenSolver<Eigen::Matrix2f> eigensolver(A);
+   if (eigensolver.info() != Eigen::Success) abort();
+   std::cout << "The eigenvalues of A are:\n" << eigensolver.eigenvalues() << std::endl;
+   std::cout << "Here's a matrix whose columns are eigenvectors of A \n"
+        << "corresponding to these eigenvalues:\n"
+        << eigensolver.eigenvectors() << std::endl;
+}
+```
+
+https://eigen.tuxfamily.org/dox/group__TopicLinearAlgebraDecompositions.html
+
+### Solving linear least squares systems
+
+1、Using the SVD decomposition
+
+2、Using the QR decomposition
+
+3、Using normal equations
+
+```c++
+(A.transpose()*A).ldlt().solve(A.transport()*b)
+```
+
+| [SparseCore ](https://eigen.tuxfamily.org/dox/group__SparseCore__Module.html) | #include <Eigen/SparseCore>             | [SparseMatrix](https://eigen.tuxfamily.org/dox/classEigen_1_1SparseMatrix.html) and [SparseVector](https://eigen.tuxfamily.org/dox/classEigen_1_1SparseVector.html) classes, matrix assembly, basic sparse linear algebra (including sparse triangular solvers) |
+| ------------------------------------------------------------ | --------------------------------------- | ------------------------------------------------------------ |
+| [SparseCholesky ](https://eigen.tuxfamily.org/dox/group__SparseCholesky__Module.html) | #include <Eigen/SparseCholesky>         | Direct sparse [LLT](https://eigen.tuxfamily.org/dox/classEigen_1_1LLT.html) and [LDLT](https://eigen.tuxfamily.org/dox/classEigen_1_1LDLT.html) Cholesky factorization to solve sparse self-adjoint positive definite problems |
+| [SparseLU ](https://eigen.tuxfamily.org/dox/group__SparseLU__Module.html) | #include<Eigen/SparseLU>                | Sparse LU factorization to solve general square sparse systems |
+| [SparseQR ](https://eigen.tuxfamily.org/dox/group__SparseQR__Module.html) | #include<Eigen/SparseQR>                | Sparse QR factorization for solving sparse linear least-squares problems |
+| [IterativeLinearSolvers ](https://eigen.tuxfamily.org/dox/group__IterativeLinearSolvers__Module.html) | #include <Eigen/IterativeLinearSolvers> | Iterative solvers to solve large general linear square problems (including self-adjoint positive definite problems) |
+| [Sparse ](https://eigen.tuxfamily.org/dox/group__Sparse__Module.html) | #include <Eigen/Sparse>                 | Includes all the above modules                               |
+
+https://eigen.tuxfamily.org/dox/group__TopicSparseSystems.html
+
+## Geometry
+
+
+
+![alt image](./frame_tranform.png)
 
